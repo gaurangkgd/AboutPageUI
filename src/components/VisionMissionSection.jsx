@@ -45,8 +45,8 @@ const VisionMissionSection = () => {
         <div className="space-y-8 sm:space-y-12 mt-16 sm:mt-20 md:mt-24">
           {/* Row 1: Integrity, Quality, Innovation */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div className="flex items-start space-x-3 sm:space-x-4">
-              <div className="w-1 h-24 sm:h-32 bg-orange-600 shadow-lg flex-shrink-0"></div>
+            <div className="flex items-start space-x-3 sm:space-x-4 relative">
+              <div className="absolute -left-4 -top-4 w-px h-40 sm:h-44" style={{ backgroundColor: '#9D652A' }}></div>
               <div className="flex-1">
                 <span className="text-amber-700 text-2xl sm:text-3xl font-bold block mb-3 sm:mb-4 font-antonio">01</span>
                 <h3 className="text-gray-800 text-lg sm:text-xl font-bold mb-2 sm:mb-3 font-source-sans">Integrity</h3>
@@ -56,8 +56,8 @@ const VisionMissionSection = () => {
               </div>
             </div>
 
-            <div className="flex items-start space-x-3 sm:space-x-4">
-              <div className="w-1 h-24 sm:h-32 bg-orange-600 shadow-lg flex-shrink-0"></div>
+            <div className="flex items-start space-x-3 sm:space-x-4 relative">
+              <div className="absolute -left-4 -top-4 w-px h-40 sm:h-44" style={{ backgroundColor: '#9D652A' }}></div>
               <div className="flex-1">
                 <span className="text-amber-700 text-2xl sm:text-3xl font-bold block mb-3 sm:mb-4 font-antonio">02</span>
                 <h3 className="text-gray-800 text-lg sm:text-xl font-bold mb-2 sm:mb-3 font-source-sans">Quality</h3>
@@ -67,8 +67,8 @@ const VisionMissionSection = () => {
               </div>
             </div>
 
-            <div className="flex items-start space-x-3 sm:space-x-4 sm:col-span-2 lg:col-span-1">
-              <div className="w-1 h-24 sm:h-32 bg-orange-600 shadow-lg flex-shrink-0"></div>
+            <div className="flex items-start space-x-3 sm:space-x-4 relative sm:col-span-2 lg:col-span-1">
+              <div className="absolute -left-4 -top-4 w-px h-40 sm:h-44" style={{ backgroundColor: '#9D652A' }}></div>
               <div className="flex-1">
                 <span className="text-amber-700 text-2xl sm:text-3xl font-bold block mb-3 sm:mb-4 font-antonio">03</span>
                 <h3 className="text-gray-800 text-lg sm:text-xl font-bold mb-2 sm:mb-3 font-source-sans">Innovation</h3>
@@ -81,8 +81,8 @@ const VisionMissionSection = () => {
 
           {/* Row 2: Safety, Client Focus (centered) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
-            <div className="flex items-start space-x-3 sm:space-x-4">
-              <div className="w-1 h-24 sm:h-32 bg-orange-600 shadow-lg flex-shrink-0"></div>
+            <div className="flex items-start space-x-3 sm:space-x-4 relative">
+              <div className="absolute -left-4 -top-4 w-px h-40 sm:h-44" style={{ backgroundColor: '#9D652A' }}></div>
               <div className="flex-1">
                 <span className="text-amber-700 text-2xl sm:text-3xl font-bold block mb-3 sm:mb-4 font-antonio">04</span>
                 <h3 className="text-gray-800 text-lg sm:text-xl font-bold mb-2 sm:mb-3 font-source-sans">Safety</h3>
@@ -92,8 +92,8 @@ const VisionMissionSection = () => {
               </div>
             </div>
 
-            <div className="flex items-start space-x-3 sm:space-x-4">
-              <div className="w-1 h-24 sm:h-32 bg-orange-600 shadow-lg flex-shrink-0"></div>
+            <div className="flex items-start space-x-3 sm:space-x-4 relative">
+              <div className="absolute -left-4 -top-4 w-px h-40 sm:h-44" style={{ backgroundColor: '#9D652A' }}></div>
               <div className="flex-1">
                 <span className="text-amber-700 text-2xl sm:text-3xl font-bold block mb-3 sm:mb-4 font-antonio">05</span>
                 <h3 className="text-gray-800 text-lg sm:text-xl font-bold mb-2 sm:mb-3 font-source-sans">Client Focus</h3>

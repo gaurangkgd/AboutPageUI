@@ -53,12 +53,50 @@ const ServicesOfferedSection = () => {
     }
   ];
 
+  // Create extended array for seamless loop - duplicate services
+  const extendedServices = [...services, ...services, ...services];
+
+  // Removed autoplay as requested
+
+  // Autoplay functionality - continuous loop with reset
+  useEffect(() => {
+    const autoplayInterval = setInterval(() => {
+      setCurrentSlide((prev) => {
+        const nextSlide = prev + 1;
+        // Reset to middle section when reaching end to create seamless loop
+        if (nextSlide >= services.length * 2) {
+          return services.length; // Jump back to middle section
+        }
+        return nextSlide;
+      });
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(autoplayInterval);
+  }, [services.length]);
+
+  // Initialize at middle section for seamless looping
+  useEffect(() => {
+    setCurrentSlide(services.length); // Start at middle section (index 5)
+  }, [services.length]);
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % services.length);
+    setCurrentSlide((prev) => {
+      const nextSlide = prev + 1;
+      if (nextSlide >= services.length * 2) {
+        return services.length; // Jump back to middle section
+      }
+      return nextSlide;
+    });
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + services.length) % services.length);
+    setCurrentSlide((prev) => {
+      const prevSlide = prev - 1;
+      if (prevSlide < services.length) {
+        return services.length * 2 - 1; // Jump to end of middle section
+      }
+      return prevSlide;
+    });
   };
 
   // Mouse drag handlers
@@ -148,18 +186,17 @@ const ServicesOfferedSection = () => {
           {/* Left Navigation Arrow - Hidden on small screens */}
           <button
             onClick={prevSlide}
-            className="absolute -left-8 sm:-left-12 md:-left-16 top-1/2 transform -translate-y-1/2 z-10 bg-white hover:bg-gray-50 rounded-full p-2 sm:p-3 md:p-4 shadow-lg transition-all duration-200 hidden sm:block"
+            className="absolute -left-8 sm:-left-12 md:-left-16 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 md:p-4 shadow-lg transition-all duration-200 hidden sm:block"
           >
-            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-700" />
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-800" />
           </button>
 
           {/* Services Cards Container - Cover Flow Style */}
           <div 
-            className="overflow-visible w-full cursor-grab select-none flex justify-center items-center"
+            className="overflow-visible w-full cursor-grab select-none"
             ref={carouselRef}
             onMouseDown={handleMouseDown}
             onMouseLeave={() => {
-              // Handle mouse leaving the container while dragging
               if (isDragging) {
                 setIsDragging(false);
                 setDragOffset(0);
@@ -170,91 +207,107 @@ const ServicesOfferedSection = () => {
               }
             }}
             style={{ 
-              userSelect: 'none', 
-              height: windowWidth < 640 ? '300px' : windowWidth < 1024 ? '350px' : '450px',
-              cursor: isDragging ? 'grabbing' : 'grab'
+              userSelect: 'none',
+              cursor: isDragging ? 'grabbing' : 'grab',
+              height: '600px' // Fixed large height
             }}
           >
-            <div className="relative flex justify-center items-center w-full">
-              {services.map((service, index) => {
+            {/* Cover Flow Container - True infinite loop with extended services */}
+            <div className="flex items-center justify-center relative h-full px-8 sm:px-12 md:px-16">
+              {extendedServices.map((service, index) => {
+                const position = index - currentSlide;
                 const isCenter = index === currentSlide;
-                let offset = index - currentSlide;
+                const isVisible = Math.abs(position) <= 2;
                 
-                // Handle circular positioning - wrap around for smooth circular flow
-                if (offset > services.length / 2) {
-                  offset -= services.length;
-                } else if (offset < -services.length / 2) {
-                  offset += services.length;
-                }
+                if (!isVisible) return null;
                 
-                const absOffset = Math.abs(offset);
-                
-                // Calculate transform and styling based on position
-                let transform = '';
-                let scale = 1;
-                let opacity = 1;
+                let transformStyle = '';
                 let zIndex = 1;
-                
-                // Responsive spacing and sizing based on window width
-                const isMobile = windowWidth < 640;
-                const isTablet = windowWidth < 1024;
-                const spacing = isMobile ? 200 : isTablet ? 240 : 280;
-                const cardWidth = isMobile ? '280px' : '320px';
+                let opacity = 0.7;
+                let scale = 0.8;
                 
                 if (isCenter) {
-                  scale = isMobile ? 1 : 1.1;
+                  // Center card - large and prominent
+                  transformStyle = 'translateX(0) scale(1.1) rotateY(0deg)';
                   zIndex = 10;
-                  transform = `translateX(${isDragging ? dragOffset : 0}px) scale(${scale})`;
-                } else {
-                  scale = isMobile ? 0.85 : 0.8;
-                  opacity = isMobile ? 0.6 : 0.7;
-                  zIndex = 5 - absOffset;
-                  const translateX = offset * spacing + (isDragging ? dragOffset : 0);
-                  transform = `translateX(${translateX}px) scale(${scale})`;
+                  opacity = 1;
+                  scale = 1.1;
+                } else if (position === -1) {
+                  // Left side card - increased gap even more
+                  transformStyle = 'translateX(-320px) scale(0.85) rotateY(25deg)';
+                  zIndex = 5;
+                  opacity = 0.8;
+                  scale = 0.85;
+                } else if (position === 1) {
+                  // Right side card - increased gap even more
+                  transformStyle = 'translateX(320px) scale(0.85) rotateY(-25deg)';
+                  zIndex = 5;
+                  opacity = 0.8;
+                  scale = 0.85;
+                } else if (position === -2) {
+                  // Far left card (partially visible) - increased gap
+                  transformStyle = 'translateX(-560px) scale(0.7) rotateY(35deg)';
+                  zIndex = 2;
+                  opacity = 0.6;
+                  scale = 0.7;
+                } else if (position === 2) {
+                  // Far right card (partially visible) - increased gap
+                  transformStyle = 'translateX(560px) scale(0.7) rotateY(-35deg)';
+                  zIndex = 2;
+                  opacity = 0.6;
+                  scale = 0.7;
                 }
-                
-                // Show fewer cards on mobile
-                const maxVisible = isMobile ? 1 : 2;
                 
                 return (
                   <div
-                    key={service.id}
-                    className="absolute transition-all duration-500 ease-in-out cursor-pointer"
+                    key={`${service.id}-${index}`}
+                    className="absolute transition-all duration-500 ease-out cursor-pointer"
                     style={{
-                      transform,
-                      opacity,
-                      zIndex,
-                      width: cardWidth,
-                      display: absOffset > maxVisible ? 'none' : 'block'
+                      transform: transformStyle,
+                      zIndex: zIndex,
+                      opacity: opacity,
+                      width: windowWidth < 640 ? '320px' : windowWidth < 768 ? '380px' : '420px',
+                      height: '500px', // Much taller cards
+                      perspective: '1000px'
                     }}
-                    onClick={() => setCurrentSlide(index)}
+                    onClick={() => {
+                      if (!isDragging && !isCenter) {
+                        setCurrentSlide(index);
+                      }
+                    }}
                   >
-                    <div className="relative bg-black rounded-xl overflow-hidden group shadow-2xl" style={{ height: isMobile ? '250px' : isTablet ? '320px' : '380px' }}>
-                      {/* Background Image */}
+                    <div className="relative bg-black rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl h-full w-full">
                       <div 
-                        className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: `url(${service.image})` }}
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500"
+                        style={{ 
+                          backgroundImage: `url(${service.image})`,
+                          transform: `scale(${scale})`
+                        }}
                       ></div>
-                      
-                      {/* Dark Overlay */}
-                      <div className="absolute inset-0 bg-black/60"></div>
-                      
-                      {/* Content */}
-                      <div className="relative z-10 p-4 sm:p-6 h-full flex flex-col justify-end text-white">
-                        <h3 className="text-lg sm:text-xl font-bold mb-2 leading-tight font-antonio">
+                      <div className={`absolute inset-0 transition-all duration-500 ${
+                        isCenter ? 'bg-black/40' : 'bg-black/60'
+                      }`}></div>
+                      <div className="relative z-10 p-6 sm:p-8 md:p-10 h-full flex flex-col justify-end text-white">
+                        <h3 className={`font-bold mb-3 sm:mb-4 leading-tight font-antonio transition-all duration-500 ${
+                          isCenter ? 'text-2xl sm:text-3xl md:text-4xl' : 'text-xl sm:text-2xl md:text-3xl'
+                        }`}>
                           {service.title}
                         </h3>
-                        <p className="text-xs sm:text-sm opacity-90 leading-relaxed">
+                        <p className={`opacity-90 leading-relaxed font-source-sans transition-all duration-500 ${
+                          isCenter ? 'text-base sm:text-lg md:text-xl' : 'text-sm sm:text-base md:text-lg'
+                        }`}>
                           {service.description}
                         </p>
                       </div>
                       
-                      {/* Hover Effect */}
-                      <div className="absolute inset-0 bg-amber-700/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      
                       {/* Center Card Highlight */}
                       {isCenter && (
-                        <div className="absolute inset-0 ring-2 sm:ring-4 ring-amber-500/50 rounded-xl pointer-events-none"></div>
+                        <div className="absolute inset-0 ring-2 sm:ring-4 ring-amber-500/50 rounded-xl pointer-events-none transition-all duration-500"></div>
+                      )}
+                      
+                      {/* Gradient overlay for side cards */}
+                      {!isCenter && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20 pointer-events-none"></div>
                       )}
                     </div>
                   </div>
@@ -266,9 +319,9 @@ const ServicesOfferedSection = () => {
           {/* Right Navigation Arrow - Hidden on small screens */}
           <button
             onClick={nextSlide}
-            className="absolute -right-8 sm:-right-12 md:-right-16 top-1/2 transform -translate-y-1/2 z-10 bg-white hover:bg-gray-50 rounded-full p-2 sm:p-3 md:p-4 shadow-lg transition-all duration-200 hidden sm:block"
+            className="absolute -right-8 sm:-right-12 md:-right-16 top-1/2 transform -translate-y-1/2 z-10 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 md:p-4 shadow-lg transition-all duration-200 hidden sm:block"
           >
-            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-700" />
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-800" />
           </button>
         </div>
 
@@ -276,19 +329,19 @@ const ServicesOfferedSection = () => {
         <div className="flex justify-center space-x-4 mt-6 sm:hidden">
           <button
             onClick={prevSlide}
-            className="bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200"
+            className="bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-200"
           >
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
+            <ChevronLeft className="w-5 h-5 text-gray-800" />
           </button>
           <button
             onClick={nextSlide}
-            className="bg-white hover:bg-gray-50 rounded-full p-3 shadow-lg transition-all duration-200"
+            className="bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-200"
           >
-            <ChevronRight className="w-5 h-5 text-gray-700" />
+            <ChevronRight className="w-5 h-5 text-gray-800" />
           </button>
         </div>
 
-        {/* Dots Indicator */}
+        {/* Dots Indicator - All 5 slides */}
         <div className="flex justify-center mt-6 sm:mt-8 space-x-2">
           {services.map((_, index) => (
             <button

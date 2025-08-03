@@ -19,30 +19,30 @@ const Navbar = () => {
               <img 
                 src={logo} 
                 alt="DP Associates Logo" 
-                className="h-12 sm:h-14 md:h-16 w-auto mr-3"
+                className="h-12 sm:h-14 md:h-16 w-auto mr-3 mt-4"
               />
             </div>
           </div>
 
           {/* Navigation Links - Center */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8 absolute left-1/2 transform -translate-x-1/2">
-            <a href="#home" className="text-white hover:text-orange-500 px-2 lg:px-3 py-2 text-sm font-medium transition-colors font-source-sans-pro">
+          <div className="hidden md:flex items-center space-x-3 lg:space-x-4 absolute left-1/2 transform -translate-x-1/2">
+            <a href="#home" className="text-white hover:text-orange-500 px-1 lg:px-2 py-2 text-sm font-medium transition-colors font-source-sans-pro">
               Home
             </a>
-            <a href="#about" className="text-orange-500 px-2 lg:px-3 py-2 text-sm font-medium font-source-sans-pro">
+            <a href="#about" className="text-orange-500 px-1 lg:px-2 py-2 text-sm font-medium font-source-sans-pro">
               About
             </a>
-            <a href="#services" className="text-white hover:text-orange-500 px-2 lg:px-3 py-2 text-sm font-medium transition-colors font-source-sans-pro">
+            <a href="#services" className="text-white hover:text-orange-500 px-1 lg:px-2 py-2 text-sm font-medium transition-colors font-source-sans-pro">
               Services
             </a>
-            <a href="#projects" className="text-white hover:text-orange-500 px-2 lg:px-3 py-2 text-sm font-medium transition-colors font-source-sans-pro">
+            <a href="#projects" className="text-white hover:text-orange-500 px-1 lg:px-2 py-2 text-sm font-medium transition-colors font-source-sans-pro">
               Projects
             </a>
           </div>
 
           {/* Contact us button - Right side */}
-          <div className="hidden md:flex">
-            <button className="text-white px-4 lg:px-6 py-2 rounded-full text-sm font-medium transition-colors font-source-sans-pro hover:opacity-90" style={{ backgroundColor: '#473018' }}>
+          <div className="hidden md:flex items-center">
+            <button className="text-white px-4 lg:px-6 py-2 rounded-full text-sm font-medium transition-colors font-source-sans-pro hover:opacity-90 mt-1" style={{ backgroundColor: '#473018' }}>
               Contact us
             </button>
           </div>

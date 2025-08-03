@@ -4,7 +4,7 @@ import logo from '../assets/logo.png';
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-8 sm:py-10 md:py-12">
+    <footer className="text-white py-8 sm:py-10 md:py-12" style={{ backgroundColor: '#191203' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center mb-6 sm:mb-8">
@@ -97,7 +97,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright Section - Centered at Bottom */}
-        <div className="border-t border-gray-800 pt-4">
+        <div className="pt-4" style={{ borderTop: '3px dashed #6B7280' }}>
           <div className="text-center">
             <div className="text-gray-400 text-sm">
               2025 DP Associates. All Rights Reserved.
